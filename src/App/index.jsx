@@ -1,14 +1,9 @@
 import { hot } from 'react-hot-loader';
 import React, { Component, Suspense } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { ApolloProvider } from 'react-apollo';
-import { ApolloClient } from 'apollo-client';
-import { HttpLink } from 'apollo-link-http';
-import { RetryLink } from 'apollo-link-retry';
-import {
-  InMemoryCache,
-  IntrospectionFragmentMatcher,
-} from 'apollo-cache-inmemory';
+import { ApolloProvider, ApolloClient, HttpLink } from '@apollo/client';
+import { RetryLink } from '@apollo/client/link/retry';
+import { InMemoryCache } from '@apollo/client/cache';
 import { persistCache } from 'apollo-cache-persist';
 import { MuiThemeProvider, withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -17,13 +12,20 @@ import theme from '../theme';
 import FontStager from '../components/FontStager/index';
 import ErrorPanel from '../components/ErrorPanel/index';
 import routes from './routes';
-import introspectionQueryResultData from '../fragmentTypes.json';
 import Spinner from '../components/Spinner';
 
-const fragmentMatcher = new IntrospectionFragmentMatcher({
-  introspectionQueryResultData,
+const cache = new InMemoryCache({
+  possibleTypes: {
+    SearchResultItem: [
+      'Issue',
+      'PullRequest',
+      'Respository',
+      'User',
+      'Organization',
+      'MarketplaceListing',
+    ],
+  },
 });
-const cache = new InMemoryCache({ fragmentMatcher });
 
 persistCache({
   cache,

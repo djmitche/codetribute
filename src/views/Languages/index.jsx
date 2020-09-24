@@ -1,6 +1,7 @@
 import { hot } from 'react-hot-loader';
 import React, { Component } from 'react';
-import { graphql, withApollo, compose } from 'react-apollo';
+import { graphql, withApollo } from '@apollo/react-hoc';
+import { compose } from 'recompose';
 import { memoizeWith, mergeAll } from 'ramda';
 import uniqBy from 'lodash.uniqby';
 import dotProp from 'dot-prop-immutable';
